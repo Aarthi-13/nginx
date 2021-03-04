@@ -1,5 +1,6 @@
 # nginx
 
+```bash
 controlplane $ git init
 Initialized empty Git repository in /root/.git/
 controlplane $ git clone https://github.com/Aarthi-13/nginx.git
@@ -185,4 +186,4 @@ NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   5m37s
 controlplane $ kubectl get po
 No resources found in default namespace.
-controlplane $ 
+controlplane $ ```
