@@ -31,14 +31,6 @@ spec:
         requests:
           storage: 1Gi
 ---
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: fast
-provisioner: kubernetes.io/gce-pd
-parameters:
-  type: pd-ssd
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -52,3 +44,23 @@ spec:
   clusterIP: None
   selector:
     app: nginx
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-disk-claim
+spec:
+  resources:
+    requests:
+      storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast
