@@ -1,6 +1,6 @@
 ```bash
 pip install foobar
-```
+
 controlplane $ git clone https://github.com/Aarthi-13/nginx.git
 Cloning into 'nginx'...
 Username for 'https://github.com': Aarthi-13
