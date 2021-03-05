@@ -1,0 +1,95 @@
+#nginx-pod-configmap-vol.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-configmap-vol
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    volumeMounts:
+    - name: test-vol
+      mountPath: "/etc/non-sensitive-data"
+      readOnly: true
+  volumes:
+    - name: test-vol
+      configMap:
+        name: nginx-configmap-vol
+        items:
+        - key: file-1.txt
+          path: file-a.txt
+        - key: file-2.txt
+          path: file-b.txt
+ 
+ 
+ 
+# redis-pod-configmap-env.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-pod-configmap-env
+spec:
+  containers:
+  - name: redis-container
+    image: redis
+    env:
+      - name: FILE_1
+        valueFrom:
+          configMapKeyRef:
+            name: redis-configmap-env
+            key: file.1
+      - name: FILE_2
+        valueFrom:
+          configMapKeyRef:
+            name: redis-configmap-env
+            key: file.2
+  restartPolicy: Never
+
+
+
+# sc.yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: fast
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  
+  
+
+# pvc1.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: my-disk-claim-1
+spec:
+  resources:
+    requests:
+      storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast
+
+
+
+# nginx-pv.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+spec:
+  containers:
+  - name: test-container
+    image: nginx
+    volumeMounts:
+    - mountPath: /test-pd
+      name: test-volume
+  volumes:
+  - name: test-volume
+    persistentVolumeClaim:
+      claimName: my-disk-claim-1
+
+
+
+
