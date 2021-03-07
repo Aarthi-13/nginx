@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: prometheus
 spec:
   serviceName: "$APP_INSTANCE_NAME-prometheus"
-  replicas: $PROMETHEUS_REPLICAS
+  replicas: 3
   podManagementPolicy: "Parallel"
   updateStrategy:
     type: "RollingUpdate"
