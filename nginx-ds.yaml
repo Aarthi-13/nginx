@@ -52,3 +52,6 @@ spec:
       - name: config-volume
         configMap:
           name: fluentd-es-config-v0.1.0
+  selector:
+    matchLabels:
+      k8s-app: fluentd-es
