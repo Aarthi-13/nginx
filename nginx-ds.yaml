@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd-es-v2.0.1
-  namespace: kube-logging
   labels:
     k8s-app: fluentd-es
     version: v2.0.1
