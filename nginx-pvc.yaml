@@ -9,4 +9,4 @@ spec:
       storage: 30Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: manual
+  storageClassName: fast
