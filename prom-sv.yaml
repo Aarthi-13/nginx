@@ -41,7 +41,7 @@ spec:
       serviceAccountName: prometheus-1-prometheus
       initContainers:
       - name: "init-chown-data"
-        image: marketplace.gcr.io/google/prometheus/debian9:${TAG}
+        image: marketplace.gcr.io/google/prometheus/debian9:2.11
         imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
@@ -50,7 +50,7 @@ spec:
           subPath: ""
       containers:
         - name: prometheus-server
-          image: marketplace.gcr.io/google/prometheus:${TAG}
+          image: marketplace.gcr.io/google/prometheus:2.11
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yaml
