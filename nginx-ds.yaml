@@ -1,31 +1,16 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd-es-v2.0.1
-  labels:
-    k8s-app: fluentd-es
-    version: v2.0.1
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
+  name: fluentd-ds
 spec:
   template:
     metadata:
       labels:
-        k8s-app: fluentd-es
-        kubernetes.io/cluster-service: "true"
-        version: v2.0.1
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
+        name: fluentd
     spec:
-      serviceAccountName: fluentd-es
       containers:
-      - name: fluentd-es
-        image: gcr.io/google-containers/fluentd-elasticsearch:v2.0.1
-        env:
-        - name: FLUENTD_ARGS
-          value: --no-supervisor -q
-        - name:  FLUENT_ELASTICSEARCH_HOST
-          value: "elasticsearch"
+      - name: fluentd
+        image: gcr.io/google-containers/fluentd-elasticsearch:1.20
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -37,7 +22,6 @@ spec:
           readOnly: true
         - name: config-volume
           mountPath: /etc/fluent/config.d
-      terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
         hostPath:
@@ -53,6 +37,4 @@ spec:
           name: fluentd-es-config-v0.1.0
   selector:
     matchLabels:
-      k8s-app: fluentd-es
-      kubernetes.io/cluster-service: "true"
-      version: v2.0.1
+      name: fluentd
