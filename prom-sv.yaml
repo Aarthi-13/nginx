@@ -86,7 +86,7 @@ spec:
       name: prometheus-1-prometheus-data
       labels: *Labels
     spec:
-      storageClassName: "standard"
+      storageClassName: manual
       accessModes:
         - ReadWriteOnce
       resources:
