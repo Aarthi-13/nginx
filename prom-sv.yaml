@@ -8,12 +8,10 @@ metadata:
     app.kubernetes.io/component: prometheus
 spec:
   ports:
-    # Exposes `http` and `TCP` ports `9090` using the default `ClusterIP` Service type
     - name: http
       port: 9090
       protocol: TCP
       targetPort: 9090
-  # Ensures clients are routed to the same Prometheus Pod, which is necessary to get consistent dashboards in a highly-available setup. 
   sessionAffinity: ClientIP
   selector:
     k8s-app: prometheus
@@ -21,8 +19,8 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: prometheus-1-prometheus
-  labels: &Labels
+  name: prometheus-1
+  labels:
     k8s-app: prometheus
     app.kubernetes.io/name: prometheus-1
     app.kubernetes.io/component: prometheus
@@ -33,10 +31,12 @@ spec:
   updateStrategy:
     type: "RollingUpdate"
   selector:
-    matchLabels: *Labels
+    matchLabels:
+      k8s-app: prometheus
   template:
     metadata:
-      labels: *Labels
+      labels:
+        k8s-app: prometheus
     spec:
       serviceAccountName: prometheus-1-prometheus
       initContainers:
@@ -84,11 +84,11 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: prometheus-1-prometheus-data
-      labels: *Labels
+      labels:
     spec:
-      storageClassName: manual
+      storageClassName: fast
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "16Gi"
+          storage: "10Gi"
