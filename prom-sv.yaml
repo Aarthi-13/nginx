@@ -26,8 +26,6 @@ metadata:
     app.kubernetes.io/component: prometheus
 spec:
   serviceName: "prometheus-1-prometheus"
-  replicas: 3
-  podManagementPolicy: "Parallel"
   updateStrategy:
     type: "RollingUpdate"
   selector:
