@@ -6,9 +6,9 @@ metadata:
 spec:
   selector:
     app: prometheus
-  type: NodePort
   ports:
-  - name: prometheus
-    protocol: TCP
-    port: 9090
-    nodePort: 30900
+    - name: http
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+  sessionAffinity: ClientIP
