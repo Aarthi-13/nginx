@@ -26,5 +26,3 @@ data:
         # scheme defaults to 'http'.
         static_configs:
         - targets: ['localhost:9090']
-    # remote storage details. For Metricfire accounts these can be
-    # found at https://app.metricfire.com/quickstart/
