@@ -8,11 +8,9 @@ metadata:
     app: prometheus
 spec:
   replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+  serviceName: prometheus
+  updateStrategy:
+    type: "RollingUpdate"
   selector:
     matchLabels:
       app: prometheus
@@ -60,4 +58,4 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "16Gi"  
+          storage: "10Gi"  
