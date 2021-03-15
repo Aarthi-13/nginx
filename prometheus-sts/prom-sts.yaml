@@ -40,6 +40,8 @@ spec:
           mountPath: /etc/prometheus
         - name: data
           mountPath: /prometheus
+      serviceAccount: prometheus
+      serviceAccountName: prometheus
       restartPolicy: Always
       securityContext: {}
       terminationGracePeriodSeconds: 30
