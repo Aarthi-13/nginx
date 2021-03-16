@@ -83,7 +83,7 @@ spec:
       labels:
         app: prometheus
     spec:
-      storageClassName: do-block-storage
+      storageClassName: manual
       accessModes:
         - ReadWriteOnce
       resources:
