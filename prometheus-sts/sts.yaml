@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  serviceName: prometheus
+  podManagementPolicy: "Parallel"
+  updateStrategy:
+    type: "RollingUpdate"
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      serviceAccount: prometheus
+      serviceAccountName: prometheus
+      initContainers:
+      - name: "init-chown-data"
+        image: debian:9
+        imagePullPolicy: Always
+        command: ["chown", "-R", "65534:65534", "/data"]
+        volumeMounts:
+        - name: data
+          mountPath: /data
+          subPath: ""
+      containers:
+      - name: prometheus
+        image: quay.io/prometheus/prometheus:v2.0.0
+        imagePullPolicy: IfNotPresent
+        args:
+          - '--storage.tsdb.retention=6h'
+          - '--storage.tsdb.path=/prometheus'
+          - '--config.file=/etc/prometheus/prometheus.yml'
+        command:
+        - /bin/prometheus
+        ports:
+        - name: web
+          containerPort: 9090
+        readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+        - name: data
+          mountPath: /data
+          subPath: ""
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        app: prometheus
+    spec:
+      storageClassName: do-block-storage
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "16Gi" 
