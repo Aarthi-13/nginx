@@ -106,7 +106,7 @@ spec:
             name: grafana-dashboardproviders
         - name: dashboards
           configMap:
-            name: dashboards
+            name: grafana-dashboards
   volumeClaimTemplates:
   - metadata:
       name: grafana-data
