@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gdashboard
+spec:
+  template:
+    metadata:
+      name: gdashpod
+    spec:
+      containers:
+      - name: gdashboard
+        image: 
+        imagePullPolicy: Never
+      restartPolicy: Never
