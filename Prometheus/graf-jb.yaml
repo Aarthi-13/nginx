@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: 
+        image: 104005/myimage
         imagePullPolicy: Never
       restartPolicy: Never
 ---
